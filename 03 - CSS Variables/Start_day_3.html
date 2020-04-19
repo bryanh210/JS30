@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <style>
+    :root {
+        /* name is base here because its html name is base */
+    --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+
+    img {
+        filter: blur(var(--blur));
+        background: var(--base);
+        padding: var(--spacing);
+    }
+
+    .hl {
+      color: var(--base);
+    }
+
+    a {
+      color: var(--base);
+      text-decoration: none;
+    }
+
+    input {
+      width: 100px;
+    }
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    input {
+      width: 100px;
+    }
+ 
+  </style>
+
+  <script>
+      /*
+        Whenever you select the inputs, it's gonna change the variables of the color:
+
+        First, select all the inputs
+        Second, get the value of the inputs
+        Third, change the root variables, because the those variables are applied on the screen
+
+      */
+    
+      // Step 1: Select all the inputs within the controls class
+      const inputs = document.querySelectorAll('.controls input');
+
+      // Step 3: handle input
+      function handleInput() {
+        // const sizing = this.dataset.sizing || ' ';
+        // const value = this.value;
+        // console.log(value, 'this.value')
+        // // setProperty(name, value)
+        // document.documentElement.style.setProperty(`--${this.name}`, value + sizing); 
+        const suffix = this.dataset.sizing || '';
+        if(this.name === 'base') console.log(this.value)
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+      }
+
+
+      // Step 2: place an event listener
+      inputs.forEach(input => input.addEventListener('click', handleInput));
+      inputs.forEach(input => input.addEventListener('mouseover', handleInput));
+      
+
+      const inputs = document.querySelectorAll('.controls input');
+
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+/*
+1) Get the data back
+2) Select the search field and the Suggestion fields
+3) As soon as someone types in, there will be a check to see if the input matches
+the cities or states
+4) display the html at the suggestion field
+
+
+*/
+
+
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+
+const cities = [];
+
+fetch(endpoint)
+    .then(res => res.json())
+    .then(data => cities.push(...data));
+
+const search = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+function match(input){
+    const regex = new RegExp(input, 'gi');
+    return cities.filter(location => location.city.match(regex)|| location.state.match(regex))
+}
+
+function displayInput() {
+    // get the value of cities array
+    const results = match(this.value);
+
+    // then map it for each city or state
+    const html = results.map(result => {
+        // highlight the input
+        const regex = new RegExp(this.value, 'gi');
+        // here what it does is it chooses a specific part of the string and
+        // replace it with a highlight class. But that only works if it matches regex
+        // regex here has equivalent of the old result.city
+        const city = result.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const state = result.state.replace(regex, `<span class="hl">${this.value}</span>`)
+        const pop = result.population;
+
+        //have to put them into <li>
+        return`
+            <li>
+                <span>${city}, ${state}</span>
+                <span>${pop}</span>
+            </li>
+        `
+    }).join('') //.join here bc html returns a string
+
+    suggestions.innerHTML = html;
+    // put the html into suggestion bars
+}
+
+
+search.addEventListener('change', displayInput);
+search.addEventListener('keyup', displayInput);
+
+
+
+
+</script>
+</body>
+</html>

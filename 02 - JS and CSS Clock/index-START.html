@@ -62,12 +62,48 @@
       background: black;
       position: absolute;
       top: 50%;
+      /* by default transform-origin is 50%
+      use transform-origin: 100% to put each hand onto the x-axis: so it will lie flat
+      0% will put it onto the x-axis to put it will start from the other side
+      transform: rotate will rotate the hands
+      transform origin and transform: rotate need to go together */
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      /* happens every 0.05 sec */
+      transition: all 0.05s;
+      /* this is so that the hands move in a snappy way */
+      transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
   </style>
 
   <script>
+    /*
+    1) Apply the correct styling and transition I want the hands to have
+    2) Make the hand move by the second. 
+      +) Peg it to the minute's second, with each second = 1 degree
+    */
 
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    function setDate() {
+      const now = new Date();
+      const second = now.getSeconds();
+      // 90 here to offset the initial 90 degree
+      const secondsDegree = ((second / 60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsDegree}deg)`;
+      
+      const minute = now.getMinutes();
+      const minutesDegree = ((second / 60) * 360) + 90;
+      minuteHand.style.transform = `rotate(${minutesDegree}deg)`;
+
+      const hour = now.getHours();
+      const hoursDegree = ((second / 60) * 360) + 90;
+      hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+    }
+
+    setInterval(setDate, 1000)
 
   </script>
 </body>

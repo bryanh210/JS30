@@ -31,72 +31,84 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
-    const inventors1500s = inventors.filter(inventor => inventor.year <=1599 && inventor.year >= 1500);
+    const inventors1500 = inventors.filter(inventor => inventor.year <=1599 && inventor.year >=1500)
 
-    console.table(inventors1500s);
-
+    console.table(inventors1500);
+    
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
-    const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`)
+    const inventorsFirstLast = inventors.map(inventor => `${inventor.first} ${inventor.last}`)
 
-    console.log(fullNames);
+    console.table(inventorsFirstLast)
+
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
-    const oldToYoung = inventors.sort((a,b) => {
-      return a.year - b.year
-    })
 
-    console.table(oldToYoung);
+    //NOT INVENTORS.A , BUT JUST A
+    const inventorsBirthdates = inventors.sort((a,b) => a.year - b.year)
+
+    console.table(inventorsBirthdates)
 
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
-    const yearsLived = inventors.reduce((totalSoFar, inventorYear) => {
-      return totalSoFar + (inventorYear.passed - inventorYear.year)
-    }, 0);
-    console.table(yearsLived);
-    // 5. Sort the inventors by years lived
-    // TAKE NOTE
-    const inventorYearLivedSort = inventors.sort((a,b) => {
-      const inventorAYearsLived = a.passed - a.year;
-      const inventorBYearsLived = b.passed - b.year;
 
-      return inventorBYearsLived - inventorAYearsLived;
+    // each current value is an item of the original array
+    const inventorYears = inventors.reduce((yearsLivedTotal, eachInventorObj) => {
+      return yearsLivedTotal + (eachInventorObj.passed - eachInventorObj.year)
+    }, 0)
+
+    console.log(inventorYears);
+
+
+    // 5. Sort the inventors by years lived
+    const inventorsYearsLivedSort = inventors.sort((a, b) => {
+      const aYearsLived = a.passed - a.year;
+      const bYearsLived = b.passed  - b.year;
+      return aYearsLived - bYearsLived;
     })
 
-    console.table(inventorYearLivedSort)
+
+    console.table(inventorsYearsLivedSort)
+
 
   
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
-    // do this later
+    const category = document.querySelector('.mw-category');
+    // this is what I miss. Select all the links below the category and make an array out of it
+    const arrayFromCategory = Array.from(category.querySelectorAll('a'));
+    const result = arrayFromCategory.map(array => array.text)
+                                    .filter(arrayText => arrayText.includes('de'))
 
-      const category = document.querySelector('.mw-category');
-    const links = Array.from(category.querySelectorAll('a'));
-    const de = links
-                .map(link => link.text)
-                .filter(streetName => streetName.includes('de'));
-    // 7. sort Exercise
+    console.log(result)
+
+
+       // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const peopleLastNameSort = people.sort((a,b) => {
+      const [aFirst, aLast] = a.split(', ');
+      const [bFirst, bLast] = b.split(', ');
+      return aLast - bLast;
+    })
 
-    const inventorsLastName = people.sort();
-
-    console.log(inventorsLastName , 'inventorsLastName ');
+    console.table(peopleLastNameSort)
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
-    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
-    // accumulator is tied to the end object
-    const transportation = data.reduce((currentObjState, datum) => {
-      if(!currentObjState[datum]){
-        currentObjState[datum] = 0;
-      }
-      currentObjState[datum]++;
-      return currentObjState;
+    const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck', 'pogostick'];
+
+    const dataSum = data.reduce((stateOfObject, currentItem) => {
+      // you want to put car in as 1 first bc if there's only 1 car,
+      // object will only have 0
+      if(!stateOfObject[currentItem]) stateOfObject[currentItem] = 0;
+      stateOfObject[currentItem]+= 1;
+      return stateOfObject;
     }, {})
 
-    console.log(transportation)
+    console.log(dataSum)
+
 
   </script>
 </body>

@@ -16,30 +16,66 @@
       p.style.color = '#BADA55';
       p.style.fontSize = '50px';
     }
+    /*
+    ^ To debug the above when I know it's JS causing something, but don't know 
+    what is causing it, go to dev tool. Right click <p>, Break On -> Attribute
+    Modification. Then click on the element, and a debugger console will pop up
+
+      If I want to remove it, jsut do the same and take that off
+    */
 
     // Regular
 
     // Interpolated
 
     // Styled
+    /*
+      I can style the text in console, like below:
+
+    */
+    console.log('%c I am some great text', 'color: green');
 
     // warning!
+    console.warn('SHITT')
 
     // Error :|
+    console.error('NOOO')
 
     // Info
+    console.info('I have a big... heart');
 
     // Testing
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('ouch'), 'That is wrong!')
 
-    // clearing
+    // clearing: just clear the whole console window
+    // regardless of what I put above
+    console.clear();
 
     // Viewing DOM Elements
+    // this will give me a drop down of all the attributes
+    // on that element
+    // console.log just gives you the element itself
+    // ex: <p onclick=....>Breakdown</p>
+    console.dir(p);
 
     // Grouping together
+    console.groupCollapsed ();
+    console.groupEnd()
 
     // counting
+    console.count();
 
-    // timing
+    // timing: Important! Used to time how much each call makes
+    console.time('fetching data');
+    fetch('https://api.github.com/users/websbos')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data');
+        console.log(data)
+      })
+
+      // or performance.now
 
   </script>
 </body>

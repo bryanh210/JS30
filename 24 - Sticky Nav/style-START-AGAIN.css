@@ -25,9 +25,6 @@ body {
   transition: transform 0.5s;
 }
 
-.fixed-nav .site-wrap {
-  transform: scale(1);
-}
 
 header {
   text-align: center;
@@ -55,12 +52,10 @@ nav {
 }
 
 .fixed-nav nav {
-  /* position:fixed means it's not taking up space
-  in the document, so the content below will
-  ride up */
-  position: fixed;
-  box-shadow: 0 5px red;
+    position: fixed;
+    border: 5px solid green;
 }
+
 
 nav ul {
   margin: 0;
@@ -87,13 +82,10 @@ li.logo {
   font-size: 30px;
 }
 
-/* when fixed-nav is applied, li.logo is nested
-within it, so that's why max-width takes effect */
 .fixed-nav li.logo {
-  /* have to do max-width cuz u cannot do width:
-  from 0 to auto */
-  max-width: 500px;
+    max-width: 500px;
 }
+
 
 li.logo a {
   color: black;

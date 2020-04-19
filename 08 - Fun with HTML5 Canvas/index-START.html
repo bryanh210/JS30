@@ -7,6 +7,88 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('#draw');
+
+  // can grab 2d or 3d context from canvas
+  const context = canvas.getContext('2d');
+
+  // innerWidth and innerHeight are sizes of the window
+  // canvas.width and height to change the default width and height of 800px
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  // explore what these do later
+  context.strokeStyle = 'red';
+  // defines the shape of each line
+  context.lineCap = 'round';
+  // defines what the line would look like at the point where 2 line joins
+  context.lineJoin = 'round';
+  //blend mode
+  context.globalCompositeOperation = 'multiply';
+
+  let isDrawing = false;
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+  
+
+
+  function draw(e){
+    if(!isDrawing) return; // stop the function from running when it's not moused down
+    // mother effing hsl website
+    context.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+    
+    context.beginPath();
+    // start from 0
+    context.moveTo(lastX, lastY);
+    // move to wherever the mouse is moved to
+    context.lineTo(e.offsetX, e.offsetY);
+    // to increase as hue increases
+    context.lineWidth = hue;
+    // this function starts drawing things on the page
+
+    context.stroke();
+
+    // these lines are equivalent of line 45
+    // lastX = e.offsetX;
+    // lastY = e.offsetY;
+
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+    // increment hue from 0 to 1
+    hue++;
+
+    // reset hue
+    if(hue > 360) hue = 0;
+    // to keep the lineWidth between 1 and 100
+    if(context.width >= 100 || context.lineWidth <= 1) {
+      direction != direction;
+    }
+
+    context.lineWidth = direction ? context.lineWidth++ : context.lineWidth--;
+  }
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    // update the last x and the last y, otherwise it will always start at 0
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+  });
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+  /*
+  Create a canvas, make it full width and height of the window
+  Define what lines look like and what happens when they cross path
+  Define where the line start
+  It is only allowed to draw when the mouse move or when I press it down, not when the mouse is up 
+  or out of the window
+
+  The function to draw the line itself: From beginning to end
+  Increase or decrease the hue
+
+  */
 </script>
 
 <style>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Type Ahead 👀</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+<script>
+    /*
+Summary:
+1) Fetch data from endpoint, put it into the cities array as individual items
+2) Get Suggestions and Search fields: Add event listener to listen to the user's input
+3) A search function to match the user's input
+4) A display function to display the result to the search field
+5) Highlight the search result according to input
+
+*/
+const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+const cities = [];
+
+fetch(endpoint)
+        .then(response => response.json())
+        .then(data => {
+            cities.push(...data)
+        })
+
+// can't console.log cities here because fetch is async
+// console.log(cities);
+
+const search = document.querySelector('.search');
+const suggestions = document.querySelector('.suggestions');
+
+function findMatches(wordToMatch){
+    return cities.filter(place => {
+        const regex = new RegExp(wordToMatch, 'gi');
+        // .match here to find match
+        return place.city.match(regex) || place.state.match(regex);
+    })
+
+}
+
+function displayMatches() {
+    // this.value is what we type
+    const resultArr = findMatches(this.value);
+    const html = resultArr.map(place => {
+        const regex = new RegExp(this.value, 'gi');
+        const city = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
+        const state = place.state.replace(regex, `<span class="hl">${this.value}</span>`);
+        const population = place.population;
+        return (
+            `<li>
+                <span classname="name">${city}, ${state}</span>
+                <span classname="population">${place.population}</span>
+            </li>`
+        )
+    }).join('')
+    
+    suggestions.innerHTML = html;
+}
+
+search.addEventListener('keyup', displayMatches);
+// so that it will update when things change
+search.addEventListener('change', displayMatches);
+
+</script>
+</body>
+</html>

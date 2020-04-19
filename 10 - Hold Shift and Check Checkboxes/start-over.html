@@ -96,64 +96,46 @@
   </div>
 
 <script>
-  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
-  
-  let lastChecked;
-  // console.log(lastChecked, 'lastChecked outside handleCheck');
-
-  function handleCheck(e){
-    let inBetween = false;
-    // debugger;
-    // console.log(e, 'event'); event is mouseEvent
-    // console.log(this, 'this');: this is the actual html dom element
-    //check if they have the shift key down: e.shiftKey
-    // and check that they are selecting the box: this.checkboxed
-    // console.log(lastChecked, 'lastChecked inside handleCheck');
-    if(e.shiftKey && this.checked) {
-      // loop over every single checkbox
-      checkboxes.forEach(checkbox => {
-        // this is the element itself
-        // if either of the check mark is on the current element or the previously checked element
-        if(checkbox === this || checkbox === lastChecked) {
-          console.log(checkbox, 'this here')
-          // console.log(lastChecked, 'lastChecked outside forEach checkboxes');
-          // if checkbox is `this` or checkbox is the one I had just checked is selected, inBetween is turn on to true. And when it's true, whatever checkbox in the middle will be checked because that condition has just been turned on by this condition
-          // if not, the condition won't be turned on
-           inBetween = !inBetween;
-          // can't set checkbox.checked = true here b/c it's already true
-          // since box is already checked
-        }
-
-        if(inBetween) {
-          checkbox.checked = true;
-        }
-      })
-    }
-
-    //lastChecked just means we have just checked this
-    // when we didn't press Shift and chose only 1 checkbox, this wouldn't be 
-    // available but it `this` value will be assigned to lastChecked
-    // when I check another box, now we're holding the shift key
-    // so it goes into the function
-    // lastChecked has the old value of the element
-    //
-    lastChecked = this;
-  }
-
-
-  // click event will fire even if I use my keyboard for `change`
-  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
-
-
-  /*
+    /*
   Summary:
   1) Select all checkboxes. Give each of them a click handler and bind to a function that will be activated when they are clicked
   2)This function: Will check the item that you click holding shift and the previous item that you click.
-  Will have a flag to turn on and off when you are within range
-
-
+  Will have a flag to turn on and off when you are within rangeß
 
   */ 
+
+  // select ALL checkbox under .inbox
+  const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+
+  let lastChecked;
+  function handleCheck(e) {
+      let inBetween = false;
+      // if you hold shift and check the box, then go into this
+    // this.checked is important
+      if(e.shiftKey && this.checked) {
+        
+        checkboxes.forEach(checkbox => {
+            // for each checkbox, if what I clicked equaled to lastChecked, or what I click
+        //is equal to the current element
+
+            if(checkbox === lastChecked || checkbox === this) {
+                inBetween = !inBetween
+            }
+            if(inBetween){
+                checkbox.checked = true;
+            }
+        })
+
+        
+      }
+      
+      lastChecked = this;
+  }
+
+
+  checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
+
+
 
 </script>
 </body>

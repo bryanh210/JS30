@@ -58,6 +58,64 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  /*
+    1) make the sound work
+    2) move on to visual effects (add css class)
+  */
+
+  /*
+  1: Make the sound work: Select the whole document, add an event listener so it listens to what I'm typing
+  Then now play the audio by selecting the keycode the user presses by using document.querySelector
+    +) attribute selector div[attribute=something]
+
+  2) Make the visual effects work: Select the item with the data-key of keycode and add the class 'playing' to it
+
+  3) To stop the effect: listen to when the transition end, end then remove the visual class
+  */
+
+  /*
+  1) Difference between
+  document.querySelectorAll('.key');
+  and
+  document.querySelector('.keys');
+  The latter returns the div (ex <div class="key">something</div>) and all its children while the former returns
+  a node list of all the keys
+
+  2) Why does the order of adding and removing visual not matter?
+  It's because removal is tied to the `transition-end` event, which won't be fired anyways until after the
+  playSoundAndVisual function is fied and `playing` css class is added. 
+  I think the document is smart enough to know when to fire it off
+
+  3) e.target is the div with the classname of the key I'm pressing
+
+  */
+  function removeVisual(e) {
+    console.log(e.target)
+    console.log('removeVisual');
+    if(e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
+
+  function playSoundAndVisual(e) {
+    console.log('playSoundAndVisual')
+    console.log(e.keyCode)
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const item = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if(!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+
+    item.classList.add('playing');
+  }
+
+  // add the transition end event to each key
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeVisual));
+  console.log('expected last');
+  document.addEventListener('keyup', playSoundAndVisual);
+  
+
+
 
 </script>
 

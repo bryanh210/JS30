@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Sticky Nav</title>
-  <link rel="stylesheet" href="style-START.css">
+  <link rel="stylesheet" href="style-START-AGAIN.css">
 </head>
 <body>
 
@@ -54,28 +54,56 @@
   </div>
 
 <script>
-  const nav = document.querySelector('#main');
-  // offsetTop = distance from the top of the document
-  // to the top of the element
-  const topOfNav = nav.offsetTop;
 
-  function fixNav(){
-    // window.scrollY tracks how far I've scrolled from the top
-    // of the window
-    console.log(topOfNav, window.scrollY);
+    /*
+    Summary:
+    When I scroll to the nav,
+    A color underneath the nav appears
+    Logo transition out and appear
+    Text scales up
 
-    // toggle 'fixed-nav' class
-    if(window.scrollY >= topOfNav) {
-      // element.offsetHeight = how tall the element is
-      // this will be inline
-      document.body.style.paddingTop = nav.offsetHeight + 'px';
-      document.body.classList.add('fixed-nav');
-    } else {
-      document.body.classList.remove('fixed-nav');
+    What to do:
+    Detects if I scroll to the nav:
+        +) scrollY === nav.offsetTop
+    Then toggle a class
+    fixed-nav to appear
+
+    In css, 
+    add the color underneath
+    Add logo transition
+    Text scaling
+
+    */
+    const nav = document.querySelector('#main');
+    let topOfNav = nav.offsetTop;
+    console.log(topOfNav, 'topOfNav');
+    function navFunction() {
+        // cannot use nav.offsetTop here in the conditional because
+        // as I scroll, the distance between nav and top of the page 
+        // will be narrowed down to 0
+        if(window.scrollY >= topOfNav){
+            console.log(nav.offsetTop, 'topOfNav inside scrollY');
+            document.body.style.paddingTop = nav.offsetHeight + 'px';
+            // it's document.body to add to the body tag
+            document.body.classList.add('fixed-nav')
+        } else {
+            document.body.classList.remove('fixed-nav');
+            document.body.style.paddingTop = 0;
+        }
     }
-  }
 
-  window.addEventListener('scroll', fixNav);
+    // function navFunction() {
+    //   if (window.scrollY >= topOfNav) {
+    //     document.body.style.paddingTop = nav.offsetHeight + 'px';
+    //     document.body.classList.add('fixed-nav');
+    //   } else {
+    //     document.body.classList.remove('fixed-nav');
+    //     document.body.style.paddingTop = 0;
+    //   }
+    // }
+
+    // addEventListener to the window, not element
+    window.addEventListener('scroll', navFunction)
 
 </script>
 
